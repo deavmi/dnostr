@@ -1,3 +1,5 @@
+module dnostr.app;
+
 import std.stdio;
 
 import vibe.vibe;
@@ -18,7 +20,7 @@ void main()
 	writeln("Edit source/app.d to start your project.");
 
 	URL relayEndpoint = URL("http://[::1]:8082/");
-	WebSocket d = connectWebSocket(relayEndpoint);
+	// WebSocket d = connectWebSocket(relayEndpoint);
 
 	JSONValue json;
 
@@ -45,7 +47,14 @@ void main()
 	json["id"] = id;
 
 
-	d.send(json.toString());
+	// d.send(json.toString());
+
+
+
+	import dnostr.relays;
+
+	NostrRelay relay1 = new NostrRelay("http://[::1]:8082/");
+	relay1.start();
 
 	runApplication();
 }
