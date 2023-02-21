@@ -2,15 +2,17 @@ module dnostr.client;
 
 import dnostr.relays : NostrRelay;
 import std.json;
+import core.sync.mutex : Mutex;
 
 public class NostrClient
 {
     private NostrRelay[] relays;
+    private Mutex relaysLock;
     private string myPublicKey = "MY public key (TODO)";
 
     this()
     {
-
+        relaysLock = new Mutex();
     }
 
     public final void addRelay(NostrRelay relay)
@@ -30,11 +32,17 @@ public class NostrClient
 
     public void post(NostrPost post)
     {
+        /* Lock the relay list */
+        relaysLock.lock();
 
+        /* Announce the event to each relay */
         foreach(NostrRelay relay; relays)
         {
             relay.event(post);
         }
+
+        /* Unlock the relay list */
+        relaysLock.unlock();
     }
 
     public NostrPost createPost()
