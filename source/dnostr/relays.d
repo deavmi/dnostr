@@ -20,6 +20,8 @@ public class NostrRelay : Thread
     private WebSocket ws;
     private string endpointURL;
 
+    private Duration retryTime = dur!("seconds")(1000);
+
     this(string url)
     {
         super(&run);
@@ -34,11 +36,10 @@ public class NostrRelay : Thread
     }
 
     /** 
-     * Relay worker
+     * Loops until a connection is made
      */
-    public void run()
+    private void untilConnected()
     {
-        Duration retryTime = dur!("seconds")(1000);
         while(!attemptConnection())
         {
             // TODO: Insert logic here
@@ -46,6 +47,16 @@ public class NostrRelay : Thread
             logger.log("Unable to connect to endpoint, trying again in "~to!(string)(retryTime));
             Thread.sleep(retryTime);
         }
+    }
+
+
+    /** 
+     * Relay worker
+     */
+    public void run()
+    {
+        
+        untilConnected();
 
         while(true)
         {
