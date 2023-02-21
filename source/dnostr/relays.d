@@ -35,17 +35,22 @@ public class NostrRelay : Thread
 
     private bool attemptConnection()
     {
-        logger.print("Connecting to relay at "~endpointURL~"...\n", DebugType.INFO);
+        logger.print("Connecting to relay at "~endpointURL~"...\n", DebugType.WARNING);
 
         HTTPClientSettings clientSettings = new HTTPClientSettings();
         clientSettings.connectTimeout = connectTimeout;
+        
+        try
+        {
+            ws = connectWebSocket(URL(endpointURL), clientSettings);
+            logger.print("Connected to relay\n", DebugType.INFO);
+        }
+        catch(Exception e)
+        {
+            // Catches the timeout
+        }
 
-        ws = connectWebSocket(URL(endpointURL), clientSettings);
-
-        import std.stdio;
-        writeln("kak");
-
-        return ws.connected;
+        return ws.connected();
     }
 
     /** 
@@ -86,6 +91,7 @@ public class NostrRelay : Thread
             /* If we disconnected */
             else
             {
+                logger.print("Relay connection state is closed\n", DebugType.ERROR);
                 untilConnected();
             }
             
@@ -108,19 +114,38 @@ public class NostrRelay : Thread
         }
     }
 
+    /** 
+     * Called before any of the below methods, ensures
+     * the connection to the relay is open, if not,
+     * re-opens it
+     */
+    private void ensureOpen()
+    {
+        if(!ws.connected())
+        {
+            untilConnected();
+        }
+    }
+
     public void unsubscribe()
     {
+        ensureOpen();
 
+        // TODO: Implement me
     }
 
     public void subscribe()
     {
+        ensureOpen();
 
+        // TODO: Implement me
     }
 
     import dnostr.client : NostrEvent;
     public void event(NostrEvent event)
     {
+        ensureOpen();
 
+        // TODO: Implement me
     }
 }
