@@ -55,23 +55,39 @@ public class NostrRelay : Thread
      */
     public void run()
     {
-        
+        // TODO: This may be redundant now
         untilConnected();
 
         while(true)
         {
-            string receivedText = ws.receiveText();
-            JSONValue receivedJSON;
-
-            try
+            /* Wait until the connection is closed or a message arrives */
+            if(ws.waitForData())
             {
-                receivedJSON = parseJSON(receivedText);
+                string receivedText = ws.receiveText();
+                handler(receivedText);
             }
-            catch(JSONException e)
+            /* If we disconnected */
+            else
             {
-                logger.log("Error parsing JSON received from the relay");
+                untilConnected();
             }
             
+            
+        }
+    }
+
+    private void handler(string receivedText)
+    {
+       
+        JSONValue receivedJSON;
+
+        try
+        {
+            receivedJSON = parseJSON(receivedText);
+        }
+        catch(JSONException e)
+        {
+            logger.log("Error parsing JSON received from the relay");
         }
     }
 
