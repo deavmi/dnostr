@@ -25,7 +25,7 @@ public class NostrRelay : Thread
     private Duration connectTimeout = dur!("seconds")(2);
 
     /* Time in-between retries of connects */
-    private Duration retryTime = dur!("seconds")(1);
+    private Duration retryTime = dur!("seconds")(5);
 
     this(string url)
     {
