@@ -44,13 +44,15 @@ public class NostrRelay : Thread
         {
             ws = connectWebSocket(URL(endpointURL), clientSettings);
             logger.print("Connected to relay\n", DebugType.INFO);
+            return true;
         }
         catch(Exception e)
         {
             // Catches the timeout
+            return false;
         }
 
-        return ws.connected();
+        // return ws.connected();
     }
 
     /** 
