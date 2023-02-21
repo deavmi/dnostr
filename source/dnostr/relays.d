@@ -2,25 +2,30 @@ module dnostr.relays;
 
 import std.json;
 import vibe.vibe : WebSocket, connectWebSocket, URL;
+import vibe.vibe : HTTPClientSettings;
 
-import dlog : DefaultLogger, DLogger = Logger;
+import gogga;
 import core.thread : Thread, dur, Duration;
 import std.conv : to;
 
 // TODO: Investigate if we need the belowe (I copied it from Birchwood)
-__gshared DLogger logger;
+__gshared GoggaLogger logger;
 __gshared static this()
 {
-    // TODO: Add a custom logger transformt aht includes the name of the relay in it
-    logger = new DefaultLogger();
+    logger = new GoggaLogger();
 }
+
 
 public class NostrRelay : Thread
 {
     private WebSocket ws;
     private string endpointURL;
 
-    private Duration retryTime = dur!("seconds")(1000);
+    /* TIme to wait before marking a connect attempt as failed */
+    private Duration connectTimeout = dur!("seconds")(2);
+
+    /* Time in-between retries of connects */
+    private Duration retryTime = dur!("seconds")(1);
 
     this(string url)
     {
@@ -30,7 +35,10 @@ public class NostrRelay : Thread
 
     private bool attemptConnection()
     {
-        ws = connectWebSocket(URL(endpointURL));
+        HTTPClientSettings clientSettings = new HTTPClientSettings();
+        clientSettings.connectTimeout = connectTimeout;
+
+        ws = connectWebSocket(URL(endpointURL), clientSettings);
 
         return ws.connected;
     }
@@ -44,7 +52,7 @@ public class NostrRelay : Thread
         {
             // TODO: Insert logic here
 
-            logger.log("Unable to connect to endpoint, trying again in "~to!(string)(retryTime));
+            logger.print("Unable to connect to endpoint, trying again in "~to!(string)(retryTime)~"\n", DebugType.ERROR);
             Thread.sleep(retryTime);
         }
     }
@@ -87,7 +95,7 @@ public class NostrRelay : Thread
         }
         catch(JSONException e)
         {
-            logger.log("Error parsing JSON received from the relay");
+            logger.print("Error parsing JSON received from the relay\n", DebugType.ERROR);
         }
     }
 
