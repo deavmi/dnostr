@@ -56,7 +56,9 @@ void main()
 	NostrRelay relay1 = new NostrRelay("http://[::1]:8082/");
 	relay1.start();
 
-	runApplication();
+	// runApplication();
+
+	// writeln("hi");
 }
 
 public string calculateID(JSONValue jsonIn)
