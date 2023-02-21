@@ -101,8 +101,9 @@ public class NostrRelay : Thread
 
     }
 
+    import dnostr.client : NostrEvent;
     public void event(NostrEvent event)
     {
-        
+
     }
 }
