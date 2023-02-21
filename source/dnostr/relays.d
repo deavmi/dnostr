@@ -42,11 +42,17 @@ public class NostrRelay : Thread
 
         ws = connectWebSocket(URL(endpointURL), clientSettings);
 
+        import std.stdio;
+        writeln("kak");
+
         return ws.connected;
     }
 
     /** 
      * Loops until a connection is made
+     *
+     * NOTE: This is a tad broken, I dont think connectWebSocket is vibing, that
+     * or my logic is broken
      */
     private void untilConnected()
     {
@@ -67,6 +73,7 @@ public class NostrRelay : Thread
     {
         // TODO: This may be redundant now
         untilConnected();
+        logger.print("Hi\n", DebugType.INFO);
 
         while(true)
         {
