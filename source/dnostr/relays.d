@@ -35,6 +35,8 @@ public class NostrRelay : Thread
 
     private bool attemptConnection()
     {
+        logger.print("Connecting to relay at "~endpointURL~"...\n", DebugType.INFO);
+
         HTTPClientSettings clientSettings = new HTTPClientSettings();
         clientSettings.connectTimeout = connectTimeout;
 
