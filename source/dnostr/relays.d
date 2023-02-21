@@ -101,8 +101,8 @@ public class NostrRelay : Thread
 
     }
 
-    public void event()
+    public void event(NostrEvent event)
     {
-
+        
     }
 }

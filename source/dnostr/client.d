@@ -33,7 +33,7 @@ public class NostrClient
 
         foreach(NostrRelay relay; relays)
         {
-            
+            relay.event(post);
         }
     }
 
