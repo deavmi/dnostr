@@ -52,13 +52,30 @@ void main()
 
 
 	import dnostr.relays;
+	import dnostr.client;
 
 	NostrRelay relay1 = new NostrRelay("http://[::1]:8082/");
-	relay1.start();
+	NostrRelay relay2 = new NostrRelay("http://[::1]:8082/");
+
+	NostrRelay damusRelay = new NostrRelay("https://relay.damus.io/");
+	
+
+	NostrClient client = new NostrClient([relay1]);
+
+	client.goOnline();
+
+	NostrEvent nostrPost = new NostrEvent("TODO BRUH PUBKEY");
+	client.event(nostrPost);
+
+	// while(true)
+	// {
+
+	// }
 
 	// runApplication();
 
 	// writeln("hi");
+	
 }
 
 public string calculateID(JSONValue jsonIn)

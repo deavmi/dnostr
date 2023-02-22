@@ -10,9 +10,10 @@ public class NostrClient
     private Mutex relaysLock;
     private string myPublicKey = "MY public key (TODO)";
 
-    this()
+    this(NostrRelay[] relays)
     {
         relaysLock = new Mutex();
+        this.relays = relays;
     }
 
     public final void addRelay(NostrRelay relay)
@@ -23,6 +24,18 @@ public class NostrClient
     public final void goOnline()
     {
         // Ensure all NostrRelays are online
+
+        /* Lock the relay list */
+        relaysLock.lock();
+
+        /* Start each relay */
+        foreach(NostrRelay relay; relays)
+        {
+            relay.start();
+        }
+
+        /* Unlock the relay list */
+        relaysLock.unlock();
     }
 
     public final void goOffline()
@@ -30,7 +43,7 @@ public class NostrClient
         // Ensure all NostrRelays are offline
     }
 
-    public void post(NostrPost post)
+    public void event(NostrEvent post)
     {
         /* Lock the relay list */
         relaysLock.lock();
@@ -38,6 +51,8 @@ public class NostrClient
         /* Announce the event to each relay */
         foreach(NostrRelay relay; relays)
         {
+            // TODO: Checking is relay even tpost worked, oif not, queue to disk or something for a later post (if enabled)
+            import std.stdio;
             relay.event(post);
         }
 
@@ -45,27 +60,22 @@ public class NostrClient
         relaysLock.unlock();
     }
 
-    public NostrPost createPost()
-    {
-        // Set our public key in it
-        NostrPost newPost = new NostrPost(myPublicKey);
-
-        return newPost;
-    }
+   
 }
 
 
-public class NostrEvent
+public abstract class NostrMessage
 {
-
+    public abstract JSONValue[] serialize();
+    public abstract string encode();
 }
 
 // TODO: Move the generic stuff to the above
-public class NostrPost : NostrEvent
+public class NostrEvent : NostrMessage
 {
-    protected string publicKey;
+    private string publicKey;
 
-    protected this(string publicKey)
+    this(string publicKey)
     {
         this.publicKey = publicKey;
     }
@@ -78,11 +88,21 @@ public class NostrPost : NostrEvent
         return "generatedID (TODO)";
     }
 
-    public string encode()
+    public override string encode()
     {
         // TODO: Add generateID call and switch out ID
 
         return "muh post (TODO)";
+    }
+
+    public override JSONValue[] serialize()
+    {
+        JSONValue[] items;
+
+        /* Message types */
+        items ~= JSONValue("EVENT");
+
+        return items;
     }
 }
 
