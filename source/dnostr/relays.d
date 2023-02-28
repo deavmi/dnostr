@@ -15,6 +15,7 @@ import core.thread : dur, Duration;
 import core.thread.fiber : Fiber;
 import std.conv : to;
 import core.sync.mutex : Mutex;
+import dnostr.messages;
 
 // TODO: Investigate if we need the belowe (I copied it from Birchwood)
 __gshared GoggaLogger logger;
@@ -123,10 +124,12 @@ public class NostrRelay : Fiber
         // TODO: Implement me
     }
 
-    import dnostr.client : NostrEvent;
+    
     public void event(NostrEvent g)
     {
+        /* Ensure we are online */
+        ensureConnection();
 
-    }
-    
+        // TODO: Implement me
+    }   
 }

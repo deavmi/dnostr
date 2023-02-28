@@ -1,6 +1,6 @@
 module dnostr.listener;
 
-import dnostr.client : NostrEvent;
+import dnostr.messages;
 
 /** 
  * NostrListener

@@ -11,6 +11,7 @@ import  dnostr.logging;
  */
 mixin LoggerSetup!();
 import gogga;
+import dnostr.messages;
 
 
 void main()
