@@ -1,5 +1,12 @@
 module dnostr.client;
 
+import  dnostr.logging;
+/** 
+ * FIXME: Fix the below so I need not import gogga too
+ */
+mixin LoggerSetup!();
+import gogga;
+
 import dnostr.relays : NostrRelay;
 import std.json;
 import core.sync.mutex : Mutex;

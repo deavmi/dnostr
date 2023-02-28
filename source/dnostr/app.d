@@ -2,17 +2,15 @@ module dnostr.app;
 
 import std.stdio;
 
-import vibe.vibe;
+import vibe.d;
 import std.json;
 
+import  dnostr.logging;
+/** 
+ * FIXME: Fix the below so I need not import gogga too
+ */
+mixin LoggerSetup!();
 import gogga;
-
-// TODO: Investigate if we need the belowe (I copied it from Birchwood)
-__gshared GoggaLogger logger;
-__gshared static this()
-{
-    logger = new GoggaLogger();
-}
 
 
 void main()
@@ -75,7 +73,6 @@ void main()
 	// runApplication();
 
 	// writeln("hi");
-	
 }
 
 public string calculateID(JSONValue jsonIn)

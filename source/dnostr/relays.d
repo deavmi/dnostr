@@ -4,7 +4,13 @@ import std.json;
 import vibe.vibe : WebSocket, connectWebSocket, WebSocketException;
 import vibe.vibe : HTTPClientSettings, URL;
 
+import  dnostr.logging;
+/** 
+ * FIXME: Fix the below so I need not import gogga too
+ */
+mixin LoggerSetup!();
 import gogga;
+
 import core.thread : dur, Duration;
 import core.thread.fiber : Fiber;
 import std.conv : to;
