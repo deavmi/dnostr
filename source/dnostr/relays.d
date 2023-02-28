@@ -68,7 +68,7 @@ public class NostrRelay : Fiber
     private final void ensureConnection()
     {
         /* If no websocket is present */
-        if(ws !is null)
+        if(ws is null)
         {
             try
             {
