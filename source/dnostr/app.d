@@ -16,8 +16,6 @@ import dnostr.messages;
 
 void main()
 {
-	writeln("Edit source/app.d to start your project.");
-
 	URL relayEndpoint = URL("http://[::1]:8082/");
 	// WebSocket d = connectWebSocket(relayEndpoint);
 
@@ -66,12 +64,9 @@ void main()
 	NostrEvent nostrPost = new NostrEvent("TODO BRUH PUBKEY");
 	client.event(nostrPost);
 
-	// while(true)
-	// {
+	
 
-	// }
-
-	// runApplication();
+	runApplication();
 
 	// writeln("hi");
 }
