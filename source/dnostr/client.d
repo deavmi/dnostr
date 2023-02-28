@@ -31,7 +31,7 @@ public class NostrClient
         /* Start each relay */
         foreach(NostrRelay relay; relays)
         {
-            relay.start();
+            relay.call();
         }
 
         /* Unlock the relay list */
