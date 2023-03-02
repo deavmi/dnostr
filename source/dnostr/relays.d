@@ -3,27 +3,13 @@ module dnostr.relays;
 import std.json;
 import vibe.vibe : WebSocket, connectWebSocket, WebSocketException;
 import vibe.vibe : HTTPClientSettings, URL;
-
-import  dnostr.logging;
-/** 
- * FIXME: Fix the below so I need not import gogga too
- */
-mixin LoggerSetup!();
-import gogga;
+import dnostr.logging;
 
 import core.thread : dur, Duration;
 import core.thread.fiber : Fiber;
 import std.conv : to;
 import core.sync.mutex : Mutex;
 import dnostr.messages;
-
-// TODO: Investigate if we need the belowe (I copied it from Birchwood)
-__gshared GoggaLogger logger;
-__gshared static this()
-{
-    logger = new GoggaLogger();
-}
-
 
 public class NostrRelay : Fiber
 {
@@ -76,7 +62,7 @@ public class NostrRelay : Fiber
             }
             catch(WebSocketException e)
             {
-                logger.print("There was an error creating a web socket\n", DebugType.ERROR);
+                logger.error("There was an error creating a web socket");
             }
         }
 
@@ -98,7 +84,7 @@ public class NostrRelay : Fiber
         }
         catch(JSONException e)
         {
-            logger.print("Error parsing JSON received from the relay\n", DebugType.ERROR);
+            logger.error("Error parsing JSON received from the relay");
         }
     }
 
@@ -131,5 +117,6 @@ public class NostrRelay : Fiber
         ensureConnection();
 
         // TODO: Implement me
+        ws.send(g.encode());
     }   
 }

@@ -4,13 +4,7 @@ import std.stdio;
 
 import vibe.d;
 import std.json;
-
-import  dnostr.logging;
-/** 
- * FIXME: Fix the below so I need not import gogga too
- */
-mixin LoggerSetup!();
-import gogga;
+import dnostr.logging;
 import dnostr.messages;
 
 
@@ -57,11 +51,11 @@ void main()
 	NostrRelay damusRelay = new NostrRelay("https://relay.damus.io/");
 	
 
-	NostrClient client = new NostrClient([relay1]);
+	NostrClient client = new NostrClient([relay1, relay2]);
 
 	client.goOnline();
 
-	NostrEvent nostrPost = new NostrEvent("TODO BRUH PUBKEY");
+	NostrEvent nostrPost = new NostrEvent("TODO BRUH PUBKEY", "This is my post's body!");
 	client.event(nostrPost);
 
 	
@@ -79,7 +73,7 @@ public string calculateID(JSONValue jsonIn)
 	serializedJSON ~= JSONValue(0);
 
 
-	logger.print("Comptued ID of post is: "~id~"\n", DebugType.INFO);
+	logger.info("Computed ID of post is: ", id);
 
 
 	return id;

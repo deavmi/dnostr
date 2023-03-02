@@ -1,12 +1,14 @@
 module dnostr.logging;
 
-mixin template LoggerSetup()
-{
-    import gogga;
+import gogga;
 
-    // TODO: Investigate if we need the below (I copied it from Birchwood)
-    __gshared GoggaLogger logger;
-    __gshared static this()
+// NOTE: If we include threads then use `__gshared` so we have
+// ... one logger for the whole threadgroup and not a per-TLS
+// ... (per-thread) logger (as we do below)
+private mixin template LoggerSetup()
+{
+    GoggaLogger logger;
+    static this()
     {
         logger = new GoggaLogger();
 
@@ -14,5 +16,10 @@ mixin template LoggerSetup()
         {
             logger.enableDebug();
         }
+
+        logger.mode(GoggaMode.RUSTACEAN);
     }
 }
+
+/* Where you import, setup logging */
+mixin LoggerSetup!();

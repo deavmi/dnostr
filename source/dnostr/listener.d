@@ -1,6 +1,7 @@
 module dnostr.listener;
 
 import dnostr.messages;
+import dnostr.logging;
 
 /** 
  * NostrListener

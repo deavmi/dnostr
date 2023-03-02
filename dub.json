@@ -4,9 +4,8 @@
 	],
 	"copyright": "Copyright © 2023, Tristan B. Velloza Kildaire",
 	"dependencies": {
-		"dlog": "~>0.0.6",
-		"gogga": "~>1.0.0",
-		"vibe-d": "~>0.9.5"
+		"gogga": "2.1.6",
+		"vibe-d": "0.9.6-beta.1"
 	},
 	"description": "A D nostr client library",
 	"license": "LGPL v3.0",
